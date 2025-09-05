@@ -2,6 +2,9 @@
 
 A REST API service built with FastAPI that integrates Cohere's model with tools like Wikipedia. The service determines when external information is needed and retrieves relevant Wikipedia content to enhance responses.
 
+## Demo & Tutorials
+- **Project Walkthrough**: https://www.youtube.com/watch?v=QZzf0Gfv654
+
 ## Summary
 - RESTful chat endpoint with Cohere's latest V2 API
 - Introduce Wikipedia tool integration using function calling
