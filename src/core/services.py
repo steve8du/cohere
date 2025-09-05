@@ -9,33 +9,6 @@ from .config import settings
 from .models import ChatHistoryEntry
 from ..tools.wikipedia import search_wikipedia, get_tool_definition
 
-
-# Chat history management
-def load_history():
-    if not Path(settings.history_file).exists():
-        return []
-    try:
-        with open(settings.history_file, 'r') as f:
-            data = json.load(f)
-            return [ChatHistoryEntry(**entry) for entry in data]
-    except:
-        return []
-
-def save_history(history):
-    with open(settings.history_file, 'w') as f:
-        json.dump([entry.model_dump() for entry in history], f, indent=2)
-
-def add_to_history(conversation_id: str, user_query: str, response: str, used_wikipedia: bool):
-    history = load_history()
-    history.append(ChatHistoryEntry(
-        conversation_id=conversation_id,
-        user_query=user_query,
-        response=response,
-        timestamp=datetime.now().isoformat(),
-        used_wikipedia=used_wikipedia
-    ))
-    save_history(history)
-
 # Cohere client management
 cohere_client = None
 
@@ -86,7 +59,33 @@ async def process_query(query: str):
         "used_wikipedia": used_wikipedia
     }
 
-# History retrieval
+
+# Chat history management
+def load_history():
+    if not Path(settings.history_file).exists():
+        return []
+    try:
+        with open(settings.history_file, 'r') as f:
+            data = json.load(f)
+            return [ChatHistoryEntry(**entry) for entry in data]
+    except:
+        return []
+
+def save_history(history):
+    with open(settings.history_file, 'w') as f:
+        json.dump([entry.model_dump() for entry in history], f, indent=2)
+
+def add_to_history(conversation_id: str, user_query: str, response: str, used_wikipedia: bool):
+    history = load_history()
+    history.append(ChatHistoryEntry(
+        conversation_id=conversation_id,
+        user_query=user_query,
+        response=response,
+        timestamp=datetime.now().isoformat(),
+        used_wikipedia=used_wikipedia
+    ))
+    save_history(history)
+
 async def get_history():
     history = load_history()
     return {
